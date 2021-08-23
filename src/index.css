@@ -1,31 +1,46 @@
 * {
   box-sizing: border-box;
-  font-family: 'Reggae One', cursive;
-  /* font-size: 1rem; */
+  font-family: 'Balsamiq Sans', cursive;
+}
+
+.container {
+  position: relative;
 }
 
 .row {
   display: grid;
   grid-template-columns: 8% 1fr 2fr 1fr;
-  grid-gap: 5px;
   align-items: center;
   margin-bottom: 0;
+  cursor: pointer;
 }
 
-/* .pagination li a {
-  font-size: .9rem;
-} */
+.headline-row {
+  cursor: auto;
+}
 
-.image {
+.row th {
+  font-weight: 400;
+}
+
+.headline {
+  cursor: pointer;
+}
+
+.game-cover {
   width: 4rem;
+  vertical-align: middle;
 }
 
 .game-title {
+  font-weight: 700;
   font-size: 1.2rem;
 }
 
+
 svg {
-  margin-right: 8px;
+  margin-right: .4rem;
+  margin-bottom: 0.15rem;
   transform: rotate(180deg);
 }
 
@@ -33,6 +48,71 @@ svg {
   transform: rotate(0);
 }
 
-.redArrow path {
+.red-arrow path {
   fill: #EE6E73;
+}
+
+.active a {
+  cursor: auto;
+}
+
+.waves-effect:hover {
+  background-color: #F8F8F8;
+}
+
+.game {
+  position: fixed;
+  top: 11rem;
+  left: 50%;
+
+  width: 23rem;
+  /* margin-left: -80px; */
+  margin-left: -12rem;
+  /* margin: auto; */
+  padding: 1rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+}
+
+.modal-close {
+  position: absolute;
+  top: 0;
+  right: -34px;
+
+  width: 22px;
+  height: 22px;
+
+  font-size: 0;
+
+  background-color: transparent;
+  border: 0;
+
+  cursor: pointer;
+}
+
+.modal-close::before,
+.modal-close::after {
+  content: "";
+
+  position: absolute;
+  top: 10px;
+  left: 1.5px;
+
+  width: 19px;
+  height: 3px;
+
+  background-color: #EE6E73;
+}
+
+.modal-close::before {
+  transform: rotate(45deg);
+}
+
+.modal-close::after {
+  transform: rotate(-45deg);
+}
+
+.card .card-content {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
 }
