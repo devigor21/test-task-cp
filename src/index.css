@@ -71,6 +71,7 @@ svg {
   /* margin: auto; */
   padding: 1rem;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+  z-index: 1;
 }
 
 .modal-close {
@@ -115,4 +116,9 @@ svg {
   display: flex;
   flex-direction: column;
   padding: 0;
+  margin-bottom: .7rem;
+}
+
+.category {
+  color: #26A69A;
 }

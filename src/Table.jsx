@@ -1,77 +1,74 @@
 import { useEffect, useState } from 'react';
+import { getGames } from './api';
 import Pagination from './Pagination';
 import Popup from './Popup';
 
 export default function Table() {
   const [games, setGames] = useState([]);
   const [page, setPage] = useState(1);
-  const [count, setCount] = useState(50);
+  const [count, setCount] = useState(50); // eslint-disable-line
   const [activeSorting, setActiveSorting] = useState('');
   const [descending, setDescending] = useState(true);
   const [value, setValue] = useState('');
-  const [filtration, setFiltration] = useState(false);
+  const [filteredGames, setFilteredGames] = useState(games);
   const [popupId, setPopupId] = useState(null);
 
-  const getGames = async () => {
-    const response = await fetch("https://free-to-play-games-database.p.rapidapi.com/api/games", {
-      "method": "GET",
-      "headers": {
-        "x-rapidapi-host": "free-to-play-games-database.p.rapidapi.com",
-        "x-rapidapi-key": "0882bff042msh5be8108c28fc154p11b800jsn16ba854f4d4b"
-      }
-    });
-    return await response.json();
+  const handleClick = (e) => {
+    setDescending(!descending);
+    setActiveSorting(e.target.textContent);
   };
 
-  const paginate = pageNumber => setPage(pageNumber);
+  const paginate = (pageNumber) => setPage(pageNumber);
   const prevPage = () => setPage(prev => prev - 1);
   const nextPage = () => setPage(prev => prev + 1);
 
-  const handleClick = (e) => {
-    setActiveSorting(e.target.textContent);
-    setDescending(!descending);
-  }
-
-  let filteredGames = [];
-  if (filtration) {
-    filteredGames = games.filter(game => game.title.toLowerCase().includes(value.toLowerCase()));
-  } else {
-    filteredGames = games;
-  }
 
   const lastIndex = page * count;
   const firstIndex = lastIndex - count;
 
-  let sortedGames = [];
   switch (activeSorting) {
     case 'Наименование':
       if (descending) {
-        sortedGames = filteredGames.sort((a, b) => b.title.localeCompare(a.title));
+        filteredGames.sort((a, b) => b.title.localeCompare(a.title));
       } else {
-        sortedGames = filteredGames.sort((a, b) => a.title.localeCompare(b.title));
+        filteredGames.sort((a, b) => a.title.localeCompare(b.title));
       }
       break;
 
     case 'Издатель':
       if (descending) {
-        sortedGames = filteredGames.sort((a, b) => b.publisher.localeCompare(a.publisher));
+        filteredGames.sort((a, b) => b.publisher.localeCompare(a.publisher));
       } else {
-        sortedGames = filteredGames.sort((a, b) => a.publisher.localeCompare(b.publisher));
+        filteredGames.sort((a, b) => a.publisher.localeCompare(b.publisher));
       }
       break;
 
     default:
-      sortedGames = filteredGames;
+      break;
   }
 
   const pagination = <Pagination
     page={page}
     count={count}
-    total={sortedGames.length}
+    total={filteredGames.length}
     paginate={paginate}
     prevPage={prevPage}
     nextPage={nextPage}
   />
+
+  const data = {
+    game: filteredGames.find(game => game.id === popupId),
+    closePopup: setPopupId
+  };
+
+  useEffect(() => {
+    setFilteredGames(games);
+  }, [games]);
+
+  useEffect(() => {
+    setFilteredGames(games.filter(game => game.title.toLowerCase().includes(value.toLowerCase())));
+    setPage(1);
+  }, [value]); // eslint-disable-line
 
   useEffect(() => {
     getGames().then((data) => setGames(data));
@@ -84,7 +81,6 @@ export default function Table() {
         onChange={(e) => setValue(e.target.value)}
         value={value}
         placeholder="Поиск игры по наименованию"
-        onFocus={() => setFiltration(true)}
       />
       {pagination}
       <table className="centered highlight">
@@ -121,7 +117,7 @@ export default function Table() {
           </tr>
         </thead>
         <tbody>
-          {sortedGames.map((game, index) => {
+          {filteredGames.map((game, index) => {
             return (
               <tr
                 className="row"
@@ -132,7 +128,6 @@ export default function Table() {
                 {<td>
                   <img className="game-cover" src={game.thumbnail} alt="Game Cover" />
                 </td>}
-                {/* <td>{game.id}</td> */}
                 <td className="game-title">{game.title}</td>
                 <td>{game.publisher}
                 </td>
@@ -142,7 +137,7 @@ export default function Table() {
         </tbody>
       </table>
       {pagination}
-      {popupId && <Popup game={sortedGames.find(game => game.id === popupId)} />}
+      {popupId && <Popup {...data} />}
     </div >
   );
 }
