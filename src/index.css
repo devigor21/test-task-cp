@@ -64,11 +64,8 @@ svg {
   position: fixed;
   top: 11rem;
   left: 50%;
-
   width: 23rem;
-  /* margin-left: -80px; */
   margin-left: -12rem;
-  /* margin: auto; */
   padding: 1rem;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
   z-index: 1;
@@ -78,29 +75,22 @@ svg {
   position: absolute;
   top: 0;
   right: -34px;
-
   width: 22px;
   height: 22px;
-
   font-size: 0;
-
   background-color: transparent;
   border: 0;
-
   cursor: pointer;
 }
 
 .modal-close::before,
 .modal-close::after {
   content: "";
-
   position: absolute;
   top: 10px;
   left: 1.5px;
-
   width: 19px;
   height: 3px;
-
   background-color: #EE6E73;
 }
 
